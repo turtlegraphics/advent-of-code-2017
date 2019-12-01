@@ -33,8 +33,6 @@ if __name__ == "__main__":
                         
     args = parser.parse_args()
 
-    print args
-
     data = open(args.file).readlines()
 
     for line in data:
