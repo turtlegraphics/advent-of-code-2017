@@ -45,7 +45,7 @@ class Rope:
             combo = 0
             for i in range(16):
                 combo ^= self.rope[16*block + i]
-            hash += "%x" % combo
+            hash += "%02x" % combo
         return hash
 
 args = aocutils.parse_args()
