@@ -9,7 +9,7 @@ class Rope:
         self.n = n
         self.pos = 0
         self.skip = 0
-        self.rope = range(n)
+        self.rope = list(range(n))
 
     def __str__(self):
         out = ''
@@ -53,5 +53,5 @@ def knothash(text):
 
 if __name__ == '__main__':
     day10 = '97,167,54,178,2,11,209,174,119,248,254,0,255,1,64,190'
-    print knothash(day10)
+    print(knothash(day10))
     assert(knothash(day10) == 'aff593797989d665349efe11bb4fd99b')
