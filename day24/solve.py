@@ -9,7 +9,6 @@
 import sys
 sys.path.append('../../Advent 2022')
 from aocutils import *
-import networkx as nx
 
 args = parse_args()
 
@@ -40,25 +39,38 @@ def weight(edge):
     v1,v2 = edge
     return v1+v2
 
-def best_bridge(start,depth=0):
-    """Return the best bridge you can build starting at vertext start."""
-    debug(' '*depth+'visiting',start,end=':')
+maxdepth = 0
+best_at_maxdepth = 0
+
+def best_bridge(start,depth=0,sofar=0):
+    """Return the best bridge you can build starting at vertext start.
+    depth tracks how many edges used.
+    sofar tracks how much strenght we've built so far."""
+    
+    # print(' '*depth+'visiting',start,end=':')
     # find unused edges
     myedges = []
     for e in edges[start]:
         if e not in used:
             myedges.append(e)
 
-    debug(' '*depth,myedges)
+    #print(' '*depth,myedges)
 
     if not myedges:
-        return 0
+        global maxdepth
+        global best_at_maxdepth
+        if depth > maxdepth:
+            maxdepth = depth
+            best_at_maxdepth = sofar
+        elif depth == maxdepth:
+            if sofar > best_at_maxdepth:
+                best_at_maxdepth = sofar
 
-    # use any loops
+    # use any loops - not really worth the effort, runs a smidge faster
     for e in myedges:
         if e in loops:
             used.add(e)
-            best = weight(e) + best_bridge(start,depth+1)
+            best = weight(e) + best_bridge(start, depth+1, sofar+weight(e))
             used.remove(e)
             return best
 
@@ -68,7 +80,7 @@ def best_bridge(start,depth=0):
         v1,v2 = e
         next = v2 if (v1 == start) else v1
         used.add(e)
-        s = weight(e) + best_bridge(next,depth+1)
+        s = weight(e) + best_bridge(next, depth+1, sofar+weight(e))
         used.remove(e)
         if s > best:
             best = s
@@ -76,5 +88,4 @@ def best_bridge(start,depth=0):
     return best
 
 print('part 1:',best_bridge(0))
-
-            
+print('part 2:',best_at_maxdepth)
