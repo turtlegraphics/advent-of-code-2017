@@ -120,6 +120,8 @@ try:
         m.step()
 except Fault:
     print('part 1:', m.mulcount)
+    print('part 1 h=',m.registers['h'])
+
 
 m = Machine(inputlines,registers=list('abcdefgh'))
 m.registers['a'] = 1
